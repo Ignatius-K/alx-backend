@@ -4,6 +4,7 @@
 
 from base_caching import BaseCaching
 
+
 class BasicCache(BaseCaching):
     """Defines basic caching system
 
@@ -15,7 +16,7 @@ class BasicCache(BaseCaching):
         """Add data in cache"""
         if key is None or item is None:
             return
-        self.cache_data.update(dict(key=item))
+        self.cache_data[key] = item
 
     def get(self, key):
         """Gets data from cache"""
