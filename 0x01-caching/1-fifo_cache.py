@@ -33,16 +33,26 @@ class FIFOCache(BaseCaching):
         """Stores data in cache"""
         if key is None or item is None:
             return
-        if key in self.cache_data.keys():
-            self._put(key, item)
-            return
-        if self.num_of_keys >= self.MAX_ITEMS:
-            key_to_discard = list(self.cache_data.keys())[0]
+
+        key_exists = self.is_key_exists(key)
+        if self.is_cache_full() and not key_exists:
+            key_to_discard = self.get_key_to_discard()
             print(f'DISCARD: {key_to_discard}')
             del self.cache_data[key_to_discard]
-        else:
-            self.num_of_keys += 1
+        self.num_of_keys += 1 if not key_exists else 0
         self._put(key, item)
+
+    def is_key_exists(self, key) -> bool:
+        """Checks if key exists in cache"""
+        return key in self.cache_data.keys()
+
+    def is_cache_full(self) -> bool:
+        """Checks whether cache is full"""
+        return self.num_of_keys >= self.MAX_ITEMS
+
+    def get_key_to_discard(self):
+        """Gets key to remove"""
+        return list(self.cache_data.keys())[0]
 
     def _put(self, key, item):
         """Stores data in cache"""
