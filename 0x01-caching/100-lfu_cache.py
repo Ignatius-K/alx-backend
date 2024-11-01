@@ -59,7 +59,7 @@ class LFUCache(BaseCaching):
 
     def update_counter(self, key):
         """Updates the counter"""
-        self.access_counter.update(key)
+        self.access_counter.update([key])
 
     def get_key_to_discard(self):
         """Gets key to remove"""
